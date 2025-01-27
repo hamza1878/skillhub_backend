@@ -9,9 +9,16 @@
   },
   "dependencies": {
     "@keystone-6/auth": "^8.0.0",
-    "@keystone-6/core": "^6.0.0",
+    "@keystone-6/core": "^6.3.1",
     "@keystone-6/fields-document": "^9.0.0",
+    "apollo-server-express": "^3.13.0",
+    "apollo-server-fastify": "^3.13.0",
     "apollo-upload-client": "^18.0.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fastify": "^5.2.1",
+    "graphql-upload": "^17.0.0",
+    "keystone-storage-adapter-s3": "^2.0.0",
     "typescript": "^5.5.0"
   },
   "devDependencies": {

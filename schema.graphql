@@ -379,21 +379,166 @@ input UserRelateToOneForCreateInput {
   connect: UserWhereUniqueInput
 }
 
-type JobApplication {
+type JobPosting {
   id: ID!
-  user(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
-  userCount(where: UserWhereInput! = {}): Int
-  resume(where: ResumeWhereInput! = {}, orderBy: [ResumeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ResumeWhereUniqueInput): [Resume!]
-  resumeCount(where: ResumeWhereInput! = {}): Int
-  Company(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
-  CompanyCount(where: CompanyWhereInput! = {}): Int
-  Nom: String
-  Poste: String
-  Date: DateTime
-  Statut: String
-  Download: String
+  logo: ImageFieldOutput
+  companyName: String
+  jobTitle: String
+  description: String
+  location: String
+  company: Company
+  worktime: JobPostingWorktimeType
+  salary: String
+  postedAt: DateTime
+  expiresAt: DateTime
+  status: JobPostingStatusType
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+enum JobPostingWorktimeType {
+  Full_time
+  Part_time
+  Contract
+  Freelance
+}
+
+enum JobPostingStatusType {
+  open
+  closed
+  paused
+}
+
+input JobPostingWhereUniqueInput {
+  id: ID
+}
+
+input JobPostingWhereInput {
+  AND: [JobPostingWhereInput!]
+  OR: [JobPostingWhereInput!]
+  NOT: [JobPostingWhereInput!]
+  id: IDFilter
+  companyName: StringFilter
+  jobTitle: StringFilter
+  description: StringFilter
+  location: StringFilter
+  company: CompanyWhereInput
+  worktime: JobPostingWorktimeTypeNullableFilter
+  salary: StringFilter
+  postedAt: DateTimeFilter
+  expiresAt: DateTimeNullableFilter
+  status: JobPostingStatusTypeNullableFilter
+  createdAt: DateTimeNullableFilter
+  updatedAt: DateTimeNullableFilter
+}
+
+input JobPostingWorktimeTypeNullableFilter {
+  equals: JobPostingWorktimeType
+  in: [JobPostingWorktimeType!]
+  notIn: [JobPostingWorktimeType!]
+  not: JobPostingWorktimeTypeNullableFilter
+}
+
+input DateTimeFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeFilter
+}
+
+input JobPostingStatusTypeNullableFilter {
+  equals: JobPostingStatusType
+  in: [JobPostingStatusType!]
+  notIn: [JobPostingStatusType!]
+  not: JobPostingStatusTypeNullableFilter
+}
+
+input JobPostingOrderByInput {
+  id: OrderDirection
+  companyName: OrderDirection
+  jobTitle: OrderDirection
+  description: OrderDirection
+  location: OrderDirection
+  worktime: OrderDirection
+  salary: OrderDirection
+  postedAt: OrderDirection
+  expiresAt: OrderDirection
+  status: OrderDirection
+  createdAt: OrderDirection
+  updatedAt: OrderDirection
+}
+
+input JobPostingUpdateInput {
+  logo: ImageFieldInput
+  companyName: String
+  jobTitle: String
+  description: String
+  location: String
+  company: CompanyRelateToOneForUpdateInput
+  worktime: JobPostingWorktimeType
+  salary: String
+  postedAt: DateTime
+  expiresAt: DateTime
+  status: JobPostingStatusType
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CompanyRelateToOneForUpdateInput {
+  create: CompanyCreateInput
+  connect: CompanyWhereUniqueInput
+  disconnect: Boolean
+}
+
+input JobPostingUpdateArgs {
+  where: JobPostingWhereUniqueInput!
+  data: JobPostingUpdateInput!
+}
+
+input JobPostingCreateInput {
+  logo: ImageFieldInput
+  companyName: String
+  jobTitle: String
+  description: String
+  location: String
+  company: CompanyRelateToOneForCreateInput
+  worktime: JobPostingWorktimeType
+  salary: String
+  postedAt: DateTime
+  expiresAt: DateTime
+  status: JobPostingStatusType
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+input CompanyRelateToOneForCreateInput {
+  create: CompanyCreateInput
+  connect: CompanyWhereUniqueInput
+}
+
+type JobApplication {
+  id: ID!
+  email: String
+  resume: FileFieldOutput
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  description: String
+  linkedin: String
+  github: String
+  jobPosting: JobPosting
+  applicationDate: DateTime
+  status: String
+}
+
+type FileFieldOutput {
+  filename: String!
+  filesize: Int!
+  url: String!
 }
 
 input JobApplicationWhereUniqueInput {
@@ -405,79 +550,53 @@ input JobApplicationWhereInput {
   OR: [JobApplicationWhereInput!]
   NOT: [JobApplicationWhereInput!]
   id: IDFilter
-  user: UserManyRelationFilter
-  resume: ResumeManyRelationFilter
-  Company: CompanyManyRelationFilter
-  Nom: StringFilter
-  Poste: StringFilter
-  Date: DateTimeNullableFilter
-  Statut: StringFilter
-  Download: StringFilter
-  createdAt: DateTimeNullableFilter
-  updatedAt: DateTimeNullableFilter
-}
-
-input UserManyRelationFilter {
-  every: UserWhereInput
-  some: UserWhereInput
-  none: UserWhereInput
-}
-
-input ResumeManyRelationFilter {
-  every: ResumeWhereInput
-  some: ResumeWhereInput
-  none: ResumeWhereInput
-}
-
-input CompanyManyRelationFilter {
-  every: CompanyWhereInput
-  some: CompanyWhereInput
-  none: CompanyWhereInput
+  email: StringFilter
+  firstName: StringFilter
+  lastName: StringFilter
+  phoneNumber: StringFilter
+  description: StringFilter
+  linkedin: StringFilter
+  github: StringFilter
+  jobPosting: JobPostingWhereInput
+  applicationDate: DateTimeNullableFilter
+  status: StringFilter
 }
 
 input JobApplicationOrderByInput {
   id: OrderDirection
-  Nom: OrderDirection
-  Poste: OrderDirection
-  Date: OrderDirection
-  Statut: OrderDirection
-  Download: OrderDirection
-  createdAt: OrderDirection
-  updatedAt: OrderDirection
+  email: OrderDirection
+  firstName: OrderDirection
+  lastName: OrderDirection
+  phoneNumber: OrderDirection
+  description: OrderDirection
+  linkedin: OrderDirection
+  github: OrderDirection
+  applicationDate: OrderDirection
+  status: OrderDirection
 }
 
 input JobApplicationUpdateInput {
-  user: UserRelateToManyForUpdateInput
-  resume: ResumeRelateToManyForUpdateInput
-  Company: CompanyRelateToManyForUpdateInput
-  Nom: String
-  Poste: String
-  Date: DateTime
-  Statut: String
-  Download: String
-  createdAt: DateTime
-  updatedAt: DateTime
+  email: String
+  resume: FileFieldInput
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  description: String
+  linkedin: String
+  github: String
+  jobPosting: JobPostingRelateToOneForUpdateInput
+  applicationDate: DateTime
+  status: String
 }
 
-input UserRelateToManyForUpdateInput {
-  disconnect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+input FileFieldInput {
+  upload: Upload!
 }
 
-input ResumeRelateToManyForUpdateInput {
-  disconnect: [ResumeWhereUniqueInput!]
-  set: [ResumeWhereUniqueInput!]
-  create: [ResumeCreateInput!]
-  connect: [ResumeWhereUniqueInput!]
-}
-
-input CompanyRelateToManyForUpdateInput {
-  disconnect: [CompanyWhereUniqueInput!]
-  set: [CompanyWhereUniqueInput!]
-  create: [CompanyCreateInput!]
-  connect: [CompanyWhereUniqueInput!]
+input JobPostingRelateToOneForUpdateInput {
+  create: JobPostingCreateInput
+  connect: JobPostingWhereUniqueInput
+  disconnect: Boolean
 }
 
 input JobApplicationUpdateArgs {
@@ -486,31 +605,22 @@ input JobApplicationUpdateArgs {
 }
 
 input JobApplicationCreateInput {
-  user: UserRelateToManyForCreateInput
-  resume: ResumeRelateToManyForCreateInput
-  Company: CompanyRelateToManyForCreateInput
-  Nom: String
-  Poste: String
-  Date: DateTime
-  Statut: String
-  Download: String
-  createdAt: DateTime
-  updatedAt: DateTime
+  email: String
+  resume: FileFieldInput
+  firstName: String
+  lastName: String
+  phoneNumber: String
+  description: String
+  linkedin: String
+  github: String
+  jobPosting: JobPostingRelateToOneForCreateInput
+  applicationDate: DateTime
+  status: String
 }
 
-input UserRelateToManyForCreateInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input ResumeRelateToManyForCreateInput {
-  create: [ResumeCreateInput!]
-  connect: [ResumeWhereUniqueInput!]
-}
-
-input CompanyRelateToManyForCreateInput {
-  create: [CompanyCreateInput!]
-  connect: [CompanyWhereUniqueInput!]
+input JobPostingRelateToOneForCreateInput {
+  create: JobPostingCreateInput
+  connect: JobPostingWhereUniqueInput
 }
 
 type Resume {
@@ -521,7 +631,7 @@ type Resume {
   lastName: String
   email: String
   phone: String
-  profilePicture: String
+  profilePicture: ImageFieldOutput
   linkedin: String
   github: String
   professionalSummary: String
@@ -548,12 +658,17 @@ input ResumeWhereInput {
   lastName: StringFilter
   email: StringFilter
   phone: StringFilter
-  profilePicture: StringFilter
   linkedin: StringFilter
   github: StringFilter
   professionalSummary: StringFilter
   createdAt: DateTimeNullableFilter
   updatedAt: DateTimeNullableFilter
+}
+
+input UserManyRelationFilter {
+  every: UserWhereInput
+  some: UserWhereInput
+  none: UserWhereInput
 }
 
 input ResumeOrderByInput {
@@ -562,7 +677,6 @@ input ResumeOrderByInput {
   lastName: OrderDirection
   email: OrderDirection
   phone: OrderDirection
-  profilePicture: OrderDirection
   linkedin: OrderDirection
   github: OrderDirection
   professionalSummary: OrderDirection
@@ -576,7 +690,7 @@ input ResumeUpdateInput {
   lastName: String
   email: String
   phone: String
-  profilePicture: String
+  profilePicture: ImageFieldInput
   linkedin: String
   github: String
   professionalSummary: String
@@ -587,6 +701,13 @@ input ResumeUpdateInput {
   skills: JSON
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input ResumeUpdateArgs {
@@ -600,7 +721,7 @@ input ResumeCreateInput {
   lastName: String
   email: String
   phone: String
-  profilePicture: String
+  profilePicture: ImageFieldInput
   linkedin: String
   github: String
   professionalSummary: String
@@ -611,6 +732,11 @@ input ResumeCreateInput {
   skills: JSON
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 """
@@ -631,6 +757,12 @@ type Mutation {
   updateCompanies(data: [CompanyUpdateArgs!]!): [Company]
   deleteCompany(where: CompanyWhereUniqueInput!): Company
   deleteCompanies(where: [CompanyWhereUniqueInput!]!): [Company]
+  createJobPosting(data: JobPostingCreateInput!): JobPosting
+  createJobPostings(data: [JobPostingCreateInput!]!): [JobPosting]
+  updateJobPosting(where: JobPostingWhereUniqueInput!, data: JobPostingUpdateInput!): JobPosting
+  updateJobPostings(data: [JobPostingUpdateArgs!]!): [JobPosting]
+  deleteJobPosting(where: JobPostingWhereUniqueInput!): JobPosting
+  deleteJobPostings(where: [JobPostingWhereUniqueInput!]!): [JobPosting]
   createJobApplication(data: JobApplicationCreateInput!): JobApplication
   createJobApplications(data: [JobApplicationCreateInput!]!): [JobApplication]
   updateJobApplication(where: JobApplicationWhereUniqueInput!, data: JobApplicationUpdateInput!): JobApplication
@@ -671,6 +803,9 @@ type Query {
   company(where: CompanyWhereUniqueInput!): Company
   companies(where: CompanyWhereInput! = {}, orderBy: [CompanyOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CompanyWhereUniqueInput): [Company!]
   companiesCount(where: CompanyWhereInput! = {}): Int
+  jobPosting(where: JobPostingWhereUniqueInput!): JobPosting
+  jobPostings(where: JobPostingWhereInput! = {}, orderBy: [JobPostingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JobPostingWhereUniqueInput): [JobPosting!]
+  jobPostingsCount(where: JobPostingWhereInput! = {}): Int
   jobApplication(where: JobApplicationWhereUniqueInput!): JobApplication
   jobApplications(where: JobApplicationWhereInput! = {}, orderBy: [JobApplicationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: JobApplicationWhereUniqueInput): [JobApplication!]
   jobApplicationsCount(where: JobApplicationWhereInput! = {}): Int

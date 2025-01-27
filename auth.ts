@@ -11,6 +11,7 @@ const { withAuth } = createAuth({
   initFirstItem: {
     fields: ["email", "password"],
   },
+  
 });
 
 const sessionMaxAge = 60 * 60 * 24 * 30;

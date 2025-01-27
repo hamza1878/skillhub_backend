@@ -17,7 +17,7 @@ export const Company = list({
   fields: {
     user: relationship({ ref: "User", many: false }),
     name: text({ validation: { isRequired: false } }),
-    logo: image({ storage: "files_storage" }),
+    logo: image({ storage: 'files_storage' }), 
     IndustryType: text({ validation: { isRequired: false } }),
     type: select({ options: ["EURL", "SARL", "SAS", "SASU"], type: "enum" }),
     jobDomain: text({ validation: { isRequired: false } }),

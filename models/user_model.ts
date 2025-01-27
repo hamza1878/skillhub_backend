@@ -17,7 +17,7 @@ export const User = list({
     firstName: text({ validation: { isRequired: false } }),
     lastName: text({ validation: { isRequired: false } }),
     role: select({ options: ["USER", "COMPANY"], type: "enum" }),
-    picture:  image({ storage: "files_storage" }),
+    picture: image({ storage: 'files_storage' }), 
     phone: text({ validation: { isRequired: false } }),
     linkedin: text({ validation: { isRequired: false } }),
     github: text({ validation: { isRequired: false } }),

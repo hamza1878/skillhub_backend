@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { allowAll } from "@keystone-6/core/access";
-import { text, timestamp, relationship ,json} from "@keystone-6/core/fields";
+import { text, timestamp, relationship ,json, image} from "@keystone-6/core/fields";
 
 export const Resume = list({
   access: allowAll,
@@ -10,7 +10,7 @@ export const Resume = list({
     lastName: text({ validation: { isRequired: false } }),
     email: text({ validation: { isRequired: false } }),
     phone: text({ validation: { isRequired: false } }),
-    profilePicture: text({ validation: { isRequired: false } }),
+    profilePicture: image({ storage: 'files_storage' }), 
     linkedin: text({ validation: { isRequired: false } }),
     github: text({ validation: { isRequired: false } }),
     professionalSummary:text({ validation: { isRequired: false } }),

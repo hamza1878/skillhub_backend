@@ -12,94 +12,126 @@ generator client {
 }
 
 model User {
-  id                       String           @id @default(cuid())
-  firstName                String           @default("")
-  lastName                 String           @default("")
-  role                     String?
-  picture_id               String?
-  picture_filesize         Int?
-  picture_width            Int?
-  picture_height           Int?
-  picture_extension        String?
-  phone                    String           @default("")
-  linkedin                 String           @default("")
-  github                   String           @default("")
-  technologies             String           @default("")
-  jobTitle                 String           @default("")
-  description              String           @default("")
-  email                    String           @unique @default("")
-  password                 String?
-  status                   String?
-  createdAt                DateTime?        @default(now())
-  updatedAt                DateTime?        @default(now())
-  from_Company_user        Company[]        @relation("Company_user")
-  from_JobApplication_user JobApplication[] @relation("JobApplication_user")
-  from_Resume_user         Resume[]         @relation("Resume_user")
+  id                String    @id @default(cuid())
+  firstName         String    @default("")
+  lastName          String    @default("")
+  role              String?
+  picture_id        String?
+  picture_filesize  Int?
+  picture_width     Int?
+  picture_height    Int?
+  picture_extension String?
+  phone             String    @default("")
+  linkedin          String    @default("")
+  github            String    @default("")
+  technologies      String    @default("")
+  jobTitle          String    @default("")
+  description       String    @default("")
+  email             String    @unique @default("")
+  password          String?
+  status            String?
+  createdAt         DateTime? @default(now())
+  updatedAt         DateTime? @default(now())
+  from_Company_user Company[] @relation("Company_user")
+  from_Resume_user  Resume[]  @relation("Resume_user")
 }
 
 model Company {
-  id                          String           @id @default(cuid())
-  user                        User?            @relation("Company_user", fields: [userId], references: [id])
-  userId                      String?          @map("user")
-  name                        String           @default("")
-  logo_id                     String?
-  logo_filesize               Int?
-  logo_width                  Int?
-  logo_height                 Int?
-  logo_extension              String?
-  IndustryType                String           @default("")
-  type                        String?
-  jobDomain                   String           @default("")
-  registrationNumber          String           @default("")
-  foundingDate                DateTime?
-  headquarters                String           @default("")
-  legalStatus                 String           @default("")
-  capital                     Int?
-  revenue                     Int?
-  industry                    String           @default("")
-  businessModel               String           @default("")
-  mission                     String           @default("")
-  vision                      String           @default("")
-  phone                       String           @default("")
-  linkdein                    String           @default("")
-  createdAt                   DateTime?        @default(now())
-  updatedAt                   DateTime?        @default(now())
-  from_JobApplication_Company JobApplication[] @relation("JobApplication_Company")
+  id                      String       @id @default(cuid())
+  user                    User?        @relation("Company_user", fields: [userId], references: [id])
+  userId                  String?      @map("user")
+  name                    String       @default("")
+  logo_id                 String?
+  logo_filesize           Int?
+  logo_width              Int?
+  logo_height             Int?
+  logo_extension          String?
+  IndustryType            String       @default("")
+  type                    String?
+  jobDomain               String       @default("")
+  registrationNumber      String       @default("")
+  foundingDate            DateTime?
+  headquarters            String       @default("")
+  legalStatus             String       @default("")
+  capital                 Int?
+  revenue                 Int?
+  industry                String       @default("")
+  businessModel           String       @default("")
+  mission                 String       @default("")
+  vision                  String       @default("")
+  phone                   String       @default("")
+  linkdein                String       @default("")
+  createdAt               DateTime?    @default(now())
+  updatedAt               DateTime?    @default(now())
+  from_JobPosting_company JobPosting[] @relation("JobPosting_company")
 
   @@index([userId])
 }
 
+model JobPosting {
+  id                             String           @id @default(cuid())
+  logo_id                        String?
+  logo_filesize                  Int?
+  logo_width                     Int?
+  logo_height                    Int?
+  logo_extension                 String?
+  companyName                    String           @default("")
+  jobTitle                       String           @default("")
+  description                    String           @default("")
+  location                       String           @default("")
+  company                        Company?         @relation("JobPosting_company", fields: [companyId], references: [id])
+  companyId                      String?          @map("company")
+  worktime                       String
+  salary                         String           @default("")
+  postedAt                       DateTime         @default(now())
+  expiresAt                      DateTime?
+  status                         String
+  createdAt                      DateTime?        @default(now())
+  updatedAt                      DateTime?        @default(now())
+  from_JobApplication_jobPosting JobApplication[] @relation("JobApplication_jobPosting")
+
+  @@index([companyId])
+}
+
 model JobApplication {
-  id        String    @id @default(cuid())
-  user      User[]    @relation("JobApplication_user")
-  resume    Resume[]  @relation("JobApplication_resume")
-  Company   Company[] @relation("JobApplication_Company")
-  Nom       String    @default("")
-  Poste     String    @default("")
-  Date      DateTime? @default(now())
-  Statut    String    @default("")
-  Download  String    @default("")
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @default(now())
+  id              String      @id @default(cuid())
+  email           String      @default("")
+  resume_filesize Int?
+  resume_filename String?
+  firstName       String      @default("")
+  lastName        String      @default("")
+  phoneNumber     String      @default("")
+  description     String      @default("")
+  linkedin        String      @default("")
+  github          String      @default("")
+  jobPosting      JobPosting? @relation("JobApplication_jobPosting", fields: [jobPostingId], references: [id])
+  jobPostingId    String?     @map("jobPosting")
+  applicationDate DateTime?   @default(now())
+  status          String      @default("pending")
+
+  @@index([jobPostingId])
 }
 
 model Resume {
-  id                         String           @id @default(cuid())
-  user                       User[]           @relation("Resume_user")
-  firstName                  String           @default("")
-  lastName                   String           @default("")
-  email                      String           @default("")
-  phone                      String           @default("")
-  profilePicture             String           @default("")
-  linkedin                   String           @default("")
-  github                     String           @default("")
-  professionalSummary        String           @default("")
-  education                  String?
-  experiences                String?
-  projects                   String?
-  certifications             String?
-  skills                     String?
-  createdAt                  DateTime?        @default(now())
-  updatedAt                  DateTime?        @default(now())
-  from_JobApplication_resume JobApplication[] @relation("JobApplication_resume")
+  id                       String    @id @default(cuid())
+  user                     User[]    @relation("Resume_user")
+  firstName                String    @default("")
+  lastName                 String    @default("")
+  email                    String    @default("")
+  phone                    String    @default("")
+  profilePicture_id        String?
+  profilePicture_filesize  Int?
+  profilePicture_width     Int?
+  profilePicture_height    Int?
+  profilePicture_extension String?
+  linkedin                 String    @default("")
+  github                   String    @default("")
+  professionalSummary      String    @default("")
+  education                String?
+  experiences              String?
+  projects                 String?
+  certifications           String?
+  skills                   String?
+  createdAt                DateTime? @default(now())
+  updatedAt                DateTime? @default(now())
 }
